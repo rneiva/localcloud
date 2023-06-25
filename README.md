@@ -27,7 +27,7 @@ Create a wildcard `A` (ipv4) record to point `*.docker.mydomain.com` to your ser
 Run the following script to install:
 
 ```bash
-curl -s https://raw.githubusercontent.com/rneiva/localcloud/main/install.sh | sudo -E bash
+curl -s https://raw.githubusercontent.com/rneiva/localcloud/main/pre-flight.sh | sudo -E bash
 ```
 
 ### Credits
