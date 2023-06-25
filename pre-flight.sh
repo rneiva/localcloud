@@ -34,4 +34,4 @@ log "Updating localcloud..."
 cd "$DOCKER_BOX_PATH"
 git pull
 
-./install.sh
+sudo ./install.sh
