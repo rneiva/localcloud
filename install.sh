@@ -57,7 +57,7 @@ function get-input() {
 }
 
 echo
-echo -en "➡ ${GREEN}Running preflight checks...${NC}"
+echo -en "➡ ${GREEN}🚀 Running preflight checks 🚀\n${NC}"
 
 if [ "${OSTYPE}" != "linux-gnu" ]; then
   log_error "Wrong OS type: ${OSTYPE}"
