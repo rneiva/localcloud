@@ -2,11 +2,11 @@
 
 A lightweight docker application platform for single servers that gives you:
 
-- docker swarm
-- docker registry
-- portainer
-- traefik
-- tls with letsencrypt (optional)
+- Docker swarm
+- Docker registry
+- Portainer
+- Traefik
+- TLS with Letsencrypt (optional)
 
 See [examples/nginx-app](./examples/nginx-app) for a real-world example.
 
@@ -18,9 +18,9 @@ You need a fresh install of Ubuntu 22.04. _This is the only supported OS version
 
 ### DNS Setup
 
-- Optional
+- In case to use TLS
 
-Create a wildcard `A` (ipv4) record to point `*.docker.localcloud.local` to your server.
+Create a wildcard `A` (ipv4) record to point `*.docker.mydomain.com` to your server.
 
 ### Install
 
