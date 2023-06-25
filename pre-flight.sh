@@ -34,4 +34,8 @@ log "Updating localcloud..."
 cd "$DOCKER_BOX_PATH"
 git pull
 
-sudo ./install.sh
+log "Setting permissions to folder"
+chown ubuntu:ubuntu -R "$DOCKER_BOX_PATH"
+chmod +x *.sh
+
+./install.sh
