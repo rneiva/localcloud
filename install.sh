@@ -5,7 +5,7 @@
 # A lightweight docker application platform.
 #
 # Created by Richard Willis <willis.rh@gmail.com>
-# Edited by Raul Neiva <raulneiva@pm.me>
+# Modified by Raul Neiva <raulneiva@pm.me>
 ###########################################
 
 set -o errexit
