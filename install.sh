@@ -70,7 +70,7 @@ OS_NAME=$(
   echo "${NAME}"
 )
 if [ "${OS_NAME}" != "Ubuntu" ]; then
-  log_error "Wrong OS: ${OS_NAME} - This script only works on Ubuntu"
+  log_error "Wrong OS: ${OS_NAME} - This script only works on Ubuntu ${OS_VERSION}"
   exit 1
 fi
 
