@@ -79,7 +79,7 @@ OS_VERSION=$(
   . /etc/os-release
   echo "${VERSION_ID}"
 )
-if [ "${OS_VERSION}" != "22.04"]; then
+if [ "${OS_VERSION}" != "22.04" ]; then
   log_error "Wrong Ubuntu version: ${OS_VERSION}"
   exit 1
 fi
@@ -108,7 +108,7 @@ apt-get -qq update
 apt-get install -yqq \
   apache2-utils >/dev/null
 
-log "Docker-Box setup"
+log "Local Cloud setup"
 
 if [ -f "${LCLOUD_DATA_PATH}" ]; then
   # shellcheck source=/dev/null
@@ -116,7 +116,7 @@ if [ -f "${LCLOUD_DATA_PATH}" ]; then
 fi
 
 HOSTNAME=$(get-input "Hostname" "${HOSTNAME}")
-LCLOUD_HOST=$(get-input "Docker Box hostname" "${LCLOUD_HOST}")
+LCLOUD_HOST=$(get-input "Local Cloud hostname" "${LCLOUD_HOST}")
 DOCKER_REGISTRY_USERNAME=$(get-input "Docker Registry username" "${DOCKER_REGISTRY_USERNAME}")
 echo "Docker registry password"
 DOCKER_REGISTRY_USER_PASSWORD=$(htpasswd -nB "${DOCKER_REGISTRY_USERNAME}" | sed -e s/\\$/\\$\\$/g)
@@ -407,7 +407,7 @@ fi
 log "Pruning unused docker objects (this can take a while)..."
 docker system prune --force
 
-log_success "Success! Your box is ready to use!"
+log_success "Success! Your docker environment is ready to use!"
 
 [[ ${ENABLE_TLS} = "y" ]] && SCHEME="https" || SCHEME="http"
 
