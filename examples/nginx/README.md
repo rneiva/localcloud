@@ -7,7 +7,7 @@ Deploy an nginx application to your docker-box.
 1. Build and push the docker image:
 
     ```console
-    docker login registry.docker-box.example.com
+    docker login registry.localcloud.local
 
     docker buildx create --use
 
