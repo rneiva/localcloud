@@ -26,7 +26,7 @@ sudo sh -c "echo '<vm_ip_here> traefik.localcloud.local portainer.localcloud.loc
 
 - In case to use TLS (Public access)
 
-Create a wildcard `A` (ipv4) record to point `*.docker.mydomain.com` to your server.
+Create a wildcard `A` (ipv4) record to point `*.<public_domain.com>` to your server.
 
 ### Install
 
