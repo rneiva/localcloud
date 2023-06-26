@@ -125,7 +125,6 @@ apt-get install -yqq \
 log "Local Cloud setup"
 
 if [ -f "${LCLOUD_DATA_PATH}" ]; then
-  # shellcheck source=/dev/null
   source "${LCLOUD_DATA_PATH}"
 fi
 
@@ -147,7 +146,6 @@ else
   ENABLE_HTTPS_REDIRECTION="n"
 fi
 
-
 log "Saving variables and passwords..."
 true >"${LCLOUD_DATA_PATH}"
 {
@@ -156,10 +154,11 @@ true >"${LCLOUD_DATA_PATH}"
   echo "export ENABLE_TLS=${ENABLE_TLS}"
   echo "export ENABLE_HTTPS_REDIRECTION=${ENABLE_HTTPS_REDIRECTION}"
   echo "export CERTIFICATE_EMAIL=${CERTIFICATE_EMAIL}"
-  echo "export HOSTS=${HOSTS[@]}"
+  echo "export TRAEFIK_HOST=${TRAEFIK_HOST}"
+  echo "export PORTAINER_HOST=${PORTAINER_HOST}"
+  echo "export DOCKER_REGISTRY_HOST=${DOCKER_REGISTRY_HOST}"
 } >>"${LCLOUD_DATA_PATH}"
 
-# shellcheck source=/dev/null
 source "${LCLOUD_DATA_PATH}"
 
 log "Setting hostname..."
