@@ -208,7 +208,7 @@ fi
 
 log "Setting up portainer using version \"${PORTAINER_VERSION}\"..."
 
-if [ ! -f "${LCLOUD_PATH}/config/portainer-stack.yml" ]; then
+if [ ! -f "${LCLOUD_PATH}/config/portainer/portainer-stack.yml" ]; then
   docker run -i \
     -e PORTAINER_VERSION="${PORTAINER_VERSION}" \
     -e TRAEFIK_NETWORK="${TRAEFIK_NETWORK}" \
@@ -220,10 +220,10 @@ if [ ! -f "${LCLOUD_PATH}/config/portainer-stack.yml" ]; then
     <"${LCLOUD_PATH}/config/portainer/portainer-stack.yml.tpl" \
     >"${LCLOUD_PATH}/config/portainer/portainer-stack.yml"
 else
-  log_warn "portainer stack configig already exists, not overwriting ${LCLOUD_PATH}/config/portainer-stack.yml"
+  log_warn "portainer stack configig already exists, not overwriting ${LCLOUD_PATH}/config/portainer/portainer-stack.yml"
 fi
 
-docker stack deploy -c "${LCLOUD_PATH}/config/portainer-stack.yml" portainer
+docker stack deploy -c "${LCLOUD_PATH}/config/portainer/portainer-stack.yml" portainer
 
 echo
 echo -en "➡ ${GREEN}Waiting for portainer service to start...${NC}"
