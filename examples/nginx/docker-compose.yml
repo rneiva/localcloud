@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    image: registry.docker-box.example.com/badsyntax/nginx-app:latest
+    image: registry.localcloud.local/badsyntax/nginx-app:latest
     networks:
       - traefik-public
     healthcheck:
