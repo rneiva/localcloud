@@ -37,24 +37,24 @@ function log_error() {
   echo
 }
 
-log_sucess "Installing git..."
+log_success "Installing git..."
 
 apt-get update -qq
 apt-get -qqy install git
 
 if [ ! -d "$DOCKER_BOX_PATH" ]; then
-  log_sucess "Downloading localcloud..."
+  log_success "Downloading localcloud..."
   git clone \
     --depth 1 \
     https://github.com/rneiva/localcloud \
     "$DOCKER_BOX_PATH"
 fi
 
-log_sucess "Updating localcloud..."
+log_success "Updating localcloud..."
 cd "$DOCKER_BOX_PATH"
 git pull
 
-log_sucess "Setting permissions to folder"
+log_success "Setting permissions to folder"
 chown ubuntu:ubuntu -R "$DOCKER_BOX_PATH"
 chmod +x *.sh
 
