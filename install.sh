@@ -12,6 +12,10 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+##########
+# Colors #
+##########
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
@@ -86,8 +90,10 @@ fi
 
 echo -e "${GREEN}OK${NC}"
 
+#############
+# Variables #
+#############
 export DEBIAN_FRONTEND=noninteractive
-
 ARCH=$(dpkg --print-architecture)
 PORTAINER_VERSION="linux-${ARCH}"
 TRAEFIK_NETWORK="traefik-public"
@@ -102,6 +108,14 @@ CERTIFICATE_EMAIL="email@localcloud.local"
 PORTAINER_ADMIN_PASSWORD=""
 ENABLE_TLS="n"
 ENABLE_HTTPS_REDIRECTION="n"
+DOCKER_REGISTRY_HOST="registry.$LCLOUD_HOST"
+TRAEFIK_HOST="traefik.$LCLOUD_HOST"
+PORTAINER_HOST="portainer.$LCLOUD_HOST"
+HOSTS=(
+  "registry.${LCLOUD_HOST}"
+  "traefik.${LCLOUD_HOST}"
+  "portainer.${LCLOUD_HOST}"
+)
 
 log "Installing setup packages..."
 apt-get -qq update
@@ -133,6 +147,8 @@ else
   ENABLE_HTTPS_REDIRECTION="n"
 fi
 
+
+log "Saving variables and passwords..."
 true >"${LCLOUD_DATA_PATH}"
 {
   echo "export LCLOUD_HOST=${LCLOUD_HOST}"
@@ -140,25 +156,14 @@ true >"${LCLOUD_DATA_PATH}"
   echo "export ENABLE_TLS=${ENABLE_TLS}"
   echo "export ENABLE_HTTPS_REDIRECTION=${ENABLE_HTTPS_REDIRECTION}"
   echo "export CERTIFICATE_EMAIL=${CERTIFICATE_EMAIL}"
+  echo "export HOSTS=${HOSTS[@]}"
 } >>"${LCLOUD_DATA_PATH}"
 
 # shellcheck source=/dev/null
 source "${LCLOUD_DATA_PATH}"
 
-HOSTS=(
-  "registry.${LCLOUD_HOST}"
-  "traefik.${LCLOUD_HOST}"
-  "portainer.${LCLOUD_HOST}"
-)
-DOCKER_REGISTRY_HOST="registry.$LCLOUD_HOST"
-TRAEFIK_HOST="traefik.$LCLOUD_HOST"
-PORTAINER_HOST="portainer.$LCLOUD_HOST"
-
 log "Setting hostname..."
 hostnamectl set-hostname ${HOSTNAME}
-
-log "Saving variables and passwords..."
-printenv > ${LCLOUD_DATA_PATH}/env.vars
 
 log "Setting multiple hosts to /etc/hosts..."
 for host in "${HOSTS[@]}"
