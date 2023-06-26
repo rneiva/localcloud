@@ -4,7 +4,7 @@
 #
 # A lightweight docker application platform.
 #
-# By Richard Willis <willis.rh@gmail.com>
+# Created by Richard Willis <willis.rh@gmail.com>
 # Edited by Raul Neiva <raulneiva@pm.me>
 ###########################################
 
@@ -57,7 +57,7 @@ function get-input() {
 }
 
 echo
-echo -en "➡ ${GREEN}🚀 Running preflight checks 🚀\n${NC}"
+echo -en "➡ ${GREEN}🚀 Running preflight checks 🚀"
 
 if [ "${OSTYPE}" != "linux-gnu" ]; then
   log_error "Wrong OS type: ${OSTYPE}"
@@ -70,7 +70,7 @@ OS_NAME=$(
   echo "${NAME}"
 )
 if [ "${OS_NAME}" != "Ubuntu" ]; then
-  log_error "Wrong OS: ${OS_NAME}"
+  log_error "Wrong OS: ${OS_NAME} - This script only works on Ubuntu"
   exit 1
 fi
 
@@ -79,7 +79,7 @@ OS_VERSION=$(
   . /etc/os-release
   echo "${VERSION_ID}"
 )
-if [ "${OS_VERSION}" != "22.04" ]; then
+if [ "${OS_VERSION}" != "22.04"]; then
   log_error "Wrong Ubuntu version: ${OS_VERSION}"
   exit 1
 fi
@@ -96,8 +96,8 @@ DOCKER_REGISTRY_VERSION="latest"
 ACME_STORAGE="/letsencrypt/acme.json"
 LCLOUD_PATH="${HOME}/localcloud"
 LCLOUD_DATA_PATH="${LCLOUD_PATH}/.docker-data"
-LCLOUD_HOST="docker.localcloud.local"
-DOCKER_REGISTRY_USERNAME="richard"
+LCLOUD_HOST="localcloud.local"
+DOCKER_REGISTRY_USERNAME="localcloud"
 CERTIFICATE_EMAIL="email@localcloud.local"
 PORTAINER_ADMIN_PASSWORD=""
 ENABLE_TLS="n"
@@ -145,17 +145,31 @@ true >"${LCLOUD_DATA_PATH}"
 # shellcheck source=/dev/null
 source "${LCLOUD_DATA_PATH}"
 
+HOSTS=(
+  "registry.${LCLOUD_HOST}"
+  "traefik.${LCLOUD_HOST}"
+  "portainer.${LCLOUD_HOST}"
+)
 DOCKER_REGISTRY_HOST="registry.$LCLOUD_HOST"
 TRAEFIK_HOST="traefik.$LCLOUD_HOST"
 PORTAINER_HOST="portainer.$LCLOUD_HOST"
 
 log "Setting hostname..."
-if [ -f /etc/hostname ]; then
-  log_warn "Hostname alredy exists: $(cat /etc/hostname)"
-else
-  echo "Setting hostname..."
-  hostnamectl set-hostname ${HOSTNAME}
-fi
+hostnamectl set-hostname ${HOSTNAME}
+
+log "Saving variables and passwords..."
+printenv > ${LCLOUD_DATA_PATH}/env.vars
+
+log "Setting multiple hosts to /etc/hosts..."
+for host in "${HOSTS[@]}"
+do
+  if grep -q "${host}" /etc/hosts; then
+    echo "Host ${host} already exists"
+  else
+    echo "Adding host ${host}"
+  echo "127.0.0.1 ${host}" >> /etc/hosts
+  fi
+done
 
 log "Upgrading packages..."
 apt-get -yqq update
@@ -167,7 +181,14 @@ apt-get -yqq install \
   curl \
   lsb-release \
   jq \
+  bash-completion \
+  htop \
+  net-tools \
+  mkcert \
   >/dev/null
+
+log "Installing bash-completion..."
+grep -wq '^source /etc/profile.d/bash_completion.sh' ~/.bashrc || echo 'source /etc/profile.d/bash_completion.sh' >> ~/.bashrc
 
 log "Installing docker..."
 
@@ -389,14 +410,6 @@ docker system prune --force
 log_success "Success! Your box is ready to use!"
 
 [[ ${ENABLE_TLS} = "y" ]] && SCHEME="https" || SCHEME="http"
-
-# log "Upgrade S.O..."
-# apt-get -yqq upgrade \
-# apt-get -yqq install \
-#     update-manager-core 
-# sudo sed -i 's/^/#/' /etc/apt/sources.list.d/*.list
-# sudo do-release-upgrade -f DistUpgradeViewNonInteractive
-# sudo apt autoremove -y
 
 echo -e "➡ ${GREEN}Access portainer at: ${SCHEME}://${PORTAINER_HOST}/${NC}"
 echo -e "➡ ${GREEN}Access traefik at: ${SCHEME}://${TRAEFIK_HOST}/${NC}"
