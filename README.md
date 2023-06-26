@@ -18,7 +18,13 @@ You need a fresh install of Ubuntu 22.04. _This is the only supported OS version
 
 ### DNS Setup
 
-- In case to use TLS
+- Locally
+
+```bash
+sudo sh -c "echo '<vm_ip_here> traefik.localcloud.local portainer.localcloud.local registry.localcloud.local' >> /etc/hosts"
+```
+
+- In case to use TLS (Public access)
 
 Create a wildcard `A` (ipv4) record to point `*.docker.mydomain.com` to your server.
 
@@ -33,3 +39,4 @@ curl -s https://raw.githubusercontent.com/rneiva/localcloud/main/pre-flight.sh |
 ### Credits
 
 - This project is a Fork from: [badsyntax/docker-box](https://github.com/badsyntax/docker-box)
+- Edited by [rneiva](https://github.com/rneiva)
