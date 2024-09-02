@@ -83,7 +83,7 @@ OS_VERSION=$(
   . /etc/os-release
   echo "${VERSION_ID}"
 )
-if [ "${OS_VERSION}" != "22.04" ]; then
+if [ "${OS_VERSION}" != "24.04" ]; then
   log_error "Wrong Ubuntu version: ${OS_VERSION}"
   exit 1
 fi
@@ -171,7 +171,7 @@ do
     echo "Host ${host} already exists"
   else
     echo "Adding host ${host}"
-  echo "127.0.0.1 ${host}" >> /etc/hosts
+    echo "127.0.0.1 ${host}" >> /etc/hosts
   fi
 done
 
@@ -245,7 +245,7 @@ if [ ! -f "${LCLOUD_PATH}/config/portainer/portainer-stack.yml" ]; then
     <"${LCLOUD_PATH}/config/portainer/portainer-stack.yml.tpl" \
     >"${LCLOUD_PATH}/config/portainer/portainer-stack.yml"
 else
-  log_warn "portainer stack configig already exists, not overwriting ${LCLOUD_PATH}/config/portainer/portainer-stack.yml"
+  log_warn "portainer stack config already exists, not overwriting ${LCLOUD_PATH}/config/portainer/portainer-stack.yml"
 fi
 
 docker stack deploy -c "${LCLOUD_PATH}/config/portainer/portainer-stack.yml" portainer
